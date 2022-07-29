@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PaisesService } from '../../services/paises.service';
 import { Country } from '../../interfaces/pais.interface';
 
@@ -6,34 +6,42 @@ import { Country } from '../../interfaces/pais.interface';
 @Component({
   selector: 'app-for-pais',
   templateUrl: './for-region.component.html',
+  styles: [`
+  button{
+    margin-right: 5px
+  }
+  `]
 
 })
-export class ForRegionComponent {
-  termino: string = ''
-  hayError: boolean = false;
-  regiones: Country[] = []
+export class ForRegionComponent implements OnInit {
+
+  regiones: string[] = ['africa', 'americas', 'asia', 'europe', 'oceania'];
+  regionActiva: string = '';
+  paises: Country[] = [];
+  hayError: boolean = false
+
+  ngOnInit(): void { }
+
 
   constructor(private paisesService: PaisesService) { }
 
-  buscar(termino: string) {
-    this.hayError = false;
-    this.termino = termino;
+  activarRegion(region: string) {
 
-    this.paisesService.buscarRegion(termino)
-      .subscribe({
-        next: (regiones) => {
-          console.log(regiones);
-          this.regiones = regiones;
-        }, error: (err) => {
-          this.hayError = true;
-          this.regiones = []
-        }
-      })
+    if (region === this.regionActiva) { return; }
+
+    this.regionActiva = region;
+    this.paises = [];
+
+    this.paisesService.buscarRegion(region)
+      .subscribe(paises => { this.paises = paises })
   }
 
-  sugerencias(termino: string){
-    this.hayError = false;
 
+  conditionalClass(region: string) {
+    return (this.regionActiva === region) ? 'btn btn-primary' : 'btn btn-outline-primary'
   }
+
+
+
+
 }
-

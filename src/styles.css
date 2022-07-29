@@ -1,3 +1,16 @@
 .imgPais {
     width: 40px;
 }
+
+.mr-5 {
+    margin-right: 10px;
+   
+}
+
+.img-thumbnail{
+    max-width: 100%;
+}
+
+h5 {
+    margin-bottom: 30px;
+}
